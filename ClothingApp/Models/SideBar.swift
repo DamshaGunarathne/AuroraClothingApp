@@ -14,36 +14,36 @@ struct SideBar: View {
 
     var body: some View {
         VStack {
-            List(viewModel.menuItems, id: \.name) { menuItem in
+            List(viewModel.menuItems, id: \.self) { menuItem in
                 Button(action: {
                     selectedCategory = menuItem
                     selectedItem = menuItem
                 }) {
-                    Label(menuItem.name, systemImage: menuItem.iconName)
-                        .foregroundColor(selectedItem == menuItem ? .blue : .black)
+                    HStack {
+                        Image(systemName: menuItem.iconName)
+                            .foregroundColor(selectedItem == menuItem ? .black : .gray)
+                            .frame(width: 24, height: 24) // Adjust icon size as needed
+                        Text(menuItem.name)
+                            .foregroundColor(selectedItem == menuItem ? .black : .gray)
+                    }
                 }
                 .buttonStyle(PlainButtonStyle())
                 .padding(.vertical, 8)
             }
-            Button(action: {
-                isLoginViewPresented.toggle()
-            }) {
-                Text("Login")
-                    .foregroundColor(.white)
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(Color.blue)
-                    .cornerRadius(8)
-            }
-            .buttonStyle(PlainButtonStyle())
-            .padding(.vertical, 8)
-            .sheet(isPresented: $isLoginViewPresented) {
-                LoginView()
-            }
+            .navigationTitle("Menu")
+            .navigationBarItems(trailing:
+                Button(action: {
+                    isLoginViewPresented.toggle()
+                }) {
+                    Text("Login")
+                }
+            )
+            
+
+
+            .padding(.bottom, 20) // Add padding to create space at the bottom
         }
         .listStyle(SidebarListStyle())
-        .frame(width: 200)
+        .frame(width: 300)
     }
 }
-
-

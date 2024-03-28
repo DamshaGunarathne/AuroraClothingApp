@@ -1,0 +1,21 @@
+{
+  "images" : [
+    {
+      "filename" : "clothing-shop-s-hangers-exhibit-modern-fashion-highlighting-the-boutique-s-stylish-ambiance-vertical-mobile-wallpaper-ai-generated-free-photo.jpg",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

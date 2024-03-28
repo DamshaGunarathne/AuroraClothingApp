@@ -2,86 +2,100 @@
 //  LoginView.swift
 //  ClothingApp
 //
-//  Created by NIBM-LAB04-PC04 on 2024-03-23.
+//  Created by NIBM-LAB04-PC04 on 2024-03-28.
 //
 
 import SwiftUI
 
 struct LoginView: View {
+    @Binding var isLoggedIn: Bool // Binding to update login state
     @State private var username: String = ""
     @State private var password: String = ""
-    @State private var showAlert: Bool = false
-
+    @State private var isLoginFailed = false // State to track login failure
+    @State private var isPasswordVisible = false // State to track password visibility
+    @State private var isSignUpActive = false // State to track sign-up page activation
 
     var body: some View {
-        ZStack{
-            Color.blue
+        NavigationView {
+            Color(.background)
                 .ignoresSafeArea()
-            Circle().scale(1.7)
-                .foregroundColor(.white.opacity(0.15))
-            Circle().scale(1.5)
-                .foregroundColor(.white)
-            VStack{
-                Spacer()
-                
-                VStack(spacing:16){
-                    Text("AuroraAttire")
-                        .font(.largeTitle)
-                        .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
-                        .foregroundColor(.blue)
-                    
-                    TextField("Username", text: $username)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                    
-                    SecureField("Password", text: $password)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                }
-                .padding()
-                
-                Button(action: {
-                    // Handle login button tap event
-                    self.loginButtonTapped()
-                }) {
-                    Text("Login")
-                        .padding()
-                        .foregroundColor(.white)
-                        .background(Color.blue)
-                        .cornerRadius(5)
-                }
-                .padding()
-                
-                Spacer()
-            }
-            .alert(isPresented: $showAlert) {
-                Alert(title: Text("Alert"), message: Text("Invalid username or password"), dismissButton: .default(Text("OK")))
-            }
-            .padding()
+                .overlay(
+                    VStack(spacing: 20) {
+                        HStack {
+                            Spacer()
+                            NavigationLink(destination: SignUpView(), isActive: $isSignUpActive) {
+                                Text("Sign Up")
+                                    .foregroundColor(.blue)
+                                    .padding(.top, 5)
+                                    .padding(.trailing, 20)
+                            }
+                        }
+                        
+                        Image("login")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 100, height: 100)
+                            .clipShape(Circle())
+                        
+                        // Title
+                        Text("AuroraAttire")
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
+                            .foregroundColor(Color(.title))
+                        
+                        Text("Login")
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
+                            .foregroundColor(.teal)
+                        
+                        // Login form
+                        TextField("Username", text: $username)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .padding()
+                            .autocapitalization(.none)
+                        
+                        HStack {
+                            // Password field
+                            if isPasswordVisible {
+                                TextField("Password", text: $password)
+                                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                                    .padding()
+                            } else {
+                                SecureField("Password", text: $password)
+                                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                                    .padding()
+                                    .autocapitalization(.none) // Disable autocapitalization
+                            }
+                            
+                        }
+                        
+                        Button(action: {
+                            // Validate login
+                            if isValidLogin(username: username, password: password) {
+                                isLoggedIn = true // Set login state to true
+                                isLoginFailed = false
+                            } else {
+                                isLoginFailed = true
+                            }
+                        }) {
+                            Text("Login")
+                                .padding(10)
+                                .foregroundColor(.white)
+                                .background(Color.blue)
+                                .cornerRadius(8)
+                        }
+                        if isLoginFailed {
+                            Text("Invalid username or password")
+                                .foregroundColor(.red)
+                        }
+                    }
+                    .padding()
+                )
         }
-     
-        
     }
-    
-    private func loginButtonTapped() {
-        // Perform login validation
-        if isValidCredentials() {
-            // Login successful, do something
-            print("Login successful")
-        } else {
-            // Show alert for invalid credentials
-            showAlert = true
-        }
-    }
-    
-    private func isValidCredentials() -> Bool {
-        // Check if username and password match some predefined values (demo purpose)
-        return username == "demo" && password == "password"
+
+    func isValidLogin(username: String, password: String) -> Bool {
+        return username == "user" && password == "password"
     }
 }
-
-    struct LoginView_Previews: PreviewProvider {
-            static var previews: some View {
-                LoginView()
-            }
-        }
-
 

@@ -20,7 +20,12 @@ struct ContentView: View {
                                 ProductCard(product: product)
                                     .environmentObject(cartManager)
                             }
+                            
                         }
+                        ForEach(filteredProducts(), id: \.id) { product in
+                                       ProductDetailsView(product: product)
+                                           .environmentObject(cartManager)
+                                   }
                         .padding()
                     }
                     .navigationTitle("AuroraAttire")

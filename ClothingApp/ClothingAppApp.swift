@@ -9,9 +9,16 @@ import SwiftUI
 
 @main
 struct ClothingAppApp: App {
+    // Create a single instance of CartManager
+    let cartManager = CartManager()
+
     var body: some Scene {
         WindowGroup {
+            // Inject CartManager into the view hierarchy
             ContentView()
+                .environmentObject(cartManager)
         }
     }
 }
+
+// Your other views remain the same...

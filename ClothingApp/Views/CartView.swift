@@ -9,15 +9,15 @@ import SwiftUI
 
 struct CartView: View {
     @EnvironmentObject var cartManager: CartManager
+
     var body: some View {
-        ScrollView{
+        ScrollView {
             if cartManager.products.count > 0 {
-                ForEach(cartManager.products, id: \.id){
-                    product in
+                ForEach(cartManager.products, id: \.id) { product in
                     ProductRow(product: product)
                 }
                 
-                HStack{
+                HStack {
                     Text("Your cart total is")
                     Spacer()
                     Text("Rs \(cartManager.total).00")
@@ -25,21 +25,24 @@ struct CartView: View {
                 }
                 .padding()
                 
-                PaymentButton(action:{})
+                PaymentButton(action: {})
                     .padding()
-            }else{
+            } else {
                 Text("Your cart is empty")
             }
         }
         .navigationTitle("My Cart")
         .padding(.top)
+        .onAppear {
+            // Refresh the view when products are added or removed from the cart
+            cartManager.objectWillChange.send()
+        }
     }
 }
 
-struct CartView_Previews: PreviewProvider{
-    static var previews: some View{
+struct CartView_Previews: PreviewProvider {
+    static var previews: some View {
         CartView()
             .environmentObject(CartManager())
-        
     }
 }

@@ -42,7 +42,11 @@ struct ProductRow: View {
 
 struct ProductRow_Previews: PreviewProvider{
     static var previews: some View{
-        ProductRow(product: productList[3])
-            .environmentObject(CartManager())
+        Group {
+            ProductRow(product: productList[3])
+                .environmentObject(CartManager())
+            ProductDetailsView(product: productList[3])
+                .environmentObject(CartManager())
+        }
     }
 }
